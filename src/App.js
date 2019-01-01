@@ -1,28 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { connect } from 'react-redux'
+import { setTodo } from '../store/actions'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const App = ({ setTodo, todo, message }) => (
+  <div>
+    <input
+      placeholder='Todo'
+      onChange={event => setTodo(event.target.value)}
+      value={todo}
+    />
+
+    {message}
+  </div>
+)
+
+const mapDispatchToProps = {
+  setTodo: setTodo
+}
+const mapStateToProps = state => {
+  return {
+    todo: state.formData.todo,
+    message: state.message.text
   }
 }
-
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
