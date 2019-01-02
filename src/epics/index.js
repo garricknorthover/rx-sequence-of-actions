@@ -1,4 +1,4 @@
-import { mergeMap, debounce, delay, mapTo } from 'rxjs/operators'
+import { concatMap, debounce, delay, mapTo } from 'rxjs/operators'
 import { combineEpics, ofType } from 'redux-observable'
 import { of, timer } from 'rxjs'
 
@@ -6,7 +6,7 @@ const enteringTextEpic = action$ =>
   action$.pipe(
     ofType('SET_TODO'),
     delay(200),
-    mergeMap(action =>
+    concatMap(action =>
       of(
         { type: 'SET_MESSAGE', text: 'You are entering text' },
         { type: 'NOT' }
@@ -18,7 +18,7 @@ const notEnteringTextEpic = action$ =>
   action$.pipe(
     ofType('NOT'),
     debounce(() => timer(1000)),
-    mergeMap(action =>
+    concatMap(action =>
       of(
         { type: 'SET_MESSAGE', text: 'Now you are not entering text' },
         { type: 'FINISHED' }
